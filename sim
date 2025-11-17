@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도형의 닮음 체험하기</title>
+    <!-- Tailwind CSS CDN --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter 폰트 (Tailwind 기본) --><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 커스텀 스타일 */
+        body {
+            /* Noto Sans KR을 기본 폰트로 사용 */
+            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+        }
+
+        /* 이미지에 겹칠 그리드 오버레이 */
+        .grid-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            /* 4x3 그리드 선 생성 */
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.5) 2px, transparent 2px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 2px, transparent 2px);
+            background-size: 25% 33.333%; /* 4열, 3행 */
+            /* 외곽선 */
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* 공책 느낌의 그리드 배경 */
+        .graph-paper {
+            background-color: #ffffff;
+            background-image:
+                linear-gradient(to right, rgba(209, 213, 219, 0.4) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(209, 213, 219, 0.4) 1px, transparent 1px);
+            background-size: 20px 20px; /* 20px 간격의 그리드 */
+        }
+
+        /* 슬라이더 썸(thumb) 스타일 커스텀 */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #f97316; /* 주황색 */
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: -6px; /* 트랙 중앙 정렬 */
+        }
+        input[type=range]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #f97316;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-10 min-h-screen flex items-center justify-center">
+
+    <!-- 창문 모양의 메인 컨테이너 --><div class="w-full max-w-5xl bg-white rounded-lg shadow-2xl overflow-hidden">
+        <!-- 창문 상단 바 --><div class="h-10 bg-orange-500 flex items-center px-4">
+            <div class="flex space-x-2">
+                <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- 메인 콘텐츠 (그리드 배경) --><div class="graph-paper p-6 md:p-10">
+            <header class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">도형의 닮음 체험하기</h1>
+                <p class="text-base md:text-lg text-gray-600">
+                    슬라이더를 움직여 〈사진 2〉의 크기를 조절해보세요.<br>
+                    사진의 크기는 변하지만, 고양이의 <span class="font-semibold text-orange-600">모양(비율)</span>은 변하지 않는 것을 확인해보세요!
+                </p>
+            </header>
+
+            <!-- 인터랙티브 영역 --><div class="flex flex-col md:flex-row items-center md:items-start md:justify-around gap-10">
+                
+                <!-- 1. 원본 사진 (사진 1) --><div class="flex flex-col items-center">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">〈사진 1〉 (원본)</h2>
+                    <!-- 이미지 컨테이너 (그리드 오버레이를 위함) --><div class="relative w-48 h-36 rounded-md overflow-hidden shadow-lg">
+                        <img src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-qV1K4sYnCqf3XkM0660PjT0v/user-J89Q5H024mF40sEa8B4xXbXG/img-qL2FpU3X68B61QzX9n7vY7H6.png?st=2024-05-23T11%3A02%3A58Z&se=2024-05-23T13%3A02%3A58Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaad409-c5d1-4139-bf0a-a2d6a2e16f73&sktid=a48cca56-e619-4fag-ba0f-c34dfa6a7993&skt=2024-05-23T12%3A36%3A05Z&ske=2024-05-24T12%3A36%3A05Z&sks=b&skv=2021-08-06&sig=c19R1yJ83Y0eYf8p19808D5Q0O7D8D8Q2S2G9W1/F1E%3D" 
+                             alt="원본 고양이 사진" 
+                             class="w-full h-full object-cover"
+                             onerror="this.src='https://placehold.co/192x144/f97316/white?text=Cat+Image'">
+                        <div class="grid-overlay"></div>
+                    </div>
+                    <p class="mt-2 text-gray-500">크기: 1.0배</p>
+                </div>
+
+                <!-- 2. 확대/축소 사진 (사진 2) --><div class="flex flex-col items-center">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">〈사진 2〉 (조절)</h2>
+                    <!-- 스케일링이 일어날 공간 확보 --><div class="w-72 h-72 flex items-center justify-center">
+                        <!-- 스케일 조절될 컨테이너 --><div id="scalable-container" class="relative w-48 h-36 rounded-md overflow-hidden shadow-lg" style="transform-origin: center;">
+                            <img src="https://oaidalleapiprodscus.blob.core.windows.net/private/org-qV1K4sYnCqf3XkM0660PjT0v/user-J89Q5H024mF40sEa8B4xXbXG/img-qL2FpU3X68B61QzX9n7vY7H6.png?st=2024-05-23T11%3A02%3A58Z&se=2024-05-23T13%3A02%3A58Z&sp=r&sv=2021-08-06&sr=b&rscd=inline&rsct=image/png&skoid=6aaad409-c5d1-4139-bf0a-a2d6a2e16f73&sktid=a48cca56-e619-4fag-ba0f-c34dfa6a7993&skt=2024-05-23T12%3A36%3A05Z&ske=2024-05-24T12%3A36%3A05Z&sks=b&skv=2021-08-06&sig=c19R1yJ83Y0eYf8p19808D5Q0O7D8D8Q2S2G9W1/F1E%3D" 
+                                 alt="조절되는 고양이 사진" 
+                                 class="w-full h-full object-cover"
+                                 onerror="this.src='https://placehold.co/192x144/f97316/white?text=Cat+Image'">
+                            <div class="grid-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 3. 컨트롤러 (슬라이더) --><div class="mt-10 max-w-md mx-auto">
+                <label for="scale-slider" class="block text-center text-lg font-medium text-gray-700 mb-2">
+                    크기 조절하기 (배율): <span id="scale-value" class="font-bold text-orange-600">1.0배</span>
+                </label>
+                <input type="range" 
+                       id="scale-slider" 
+                       min="0.5" 
+                       max="2.0" 
+                       value="1.0" 
+                       step="0.1"
+                       class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM 요소 가져오기
+        const slider = document.getElementById('scale-slider');
+        const scalableContainer = document.getElementById('scalable-container');
+        const scaleValueDisplay = document.getElementById('scale-value');
+
+        // 슬라이더에 'input' 이벤트 리스너 추가
+        slider.addEventListener('input', (event) => {
+            // 현재 슬라이더 값 가져오기
+            const scaleValue = parseFloat(event.target.value);
+            
+            // 〈사진 2〉의 스케일(transform) 조절
+            scalableContainer.style.transform = `scale(${scaleValue})`;
+            
+            // 현재 배율 텍스트 업데이트
+            scaleValueDisplay.textContent = `${scaleValue.toFixed(1)}배`;
+        });
+    </script>
+
+</body>
+</html>
